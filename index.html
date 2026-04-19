@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Français A1 — HEC Exam Prep</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0e1a;--surface:#111827;--surface2:#1a2235;--border:#1e2d45;--accent:#3b82f6;--accent2:#60a5fa;--green:#10b981;--red:#ef4444;--yellow:#f59e0b;--text:#e2e8f0;--text2:#94a3b8;--text3:#64748b;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6;}
+.header{display:flex;align-items:center;justify-content:space-between;padding:14px 24px;border-bottom:1px solid var(--border);background:var(--surface);position:sticky;top:0;z-index:100;}
+.logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1.05rem;letter-spacing:-0.02em;}
+.logo span{color:var(--accent);}
+.stats-bar{display:flex;gap:18px;align-items:center;}
+.stat{text-align:center;}
+.stat-val{font-family:'Syne',sans-serif;font-weight:700;font-size:1.05rem;}
+.stat-lbl{font-size:0.62rem;color:var(--text3);text-transform:uppercase;letter-spacing:0.05em;}
+.streak{color:var(--yellow);}
+.score-val{color:var(--green);}
+.progress-wrap{flex:1;max-width:180px;margin:0 16px;}
+.progress-bar{height:4px;background:var(--border);border-radius:2px;overflow:hidden;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:2px;transition:width 0.4s;}
+.progress-lbl{font-size:0.62rem;color:var(--text3);margin-top:3px;}
+.filter-bar{display:flex;gap:7px;padding:10px 24px;border-bottom:1px solid var(--border);overflow-x:auto;background:var(--surface);scrollbar-width:none;}
+.filter-bar::-webkit-scrollbar{display:none;}
+.filter-btn{padding:5px 12px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--text2);font-family:'DM Sans',sans-serif;font-size:0.76rem;cursor:pointer;white-space:nowrap;transition:all 0.18s;}
+.filter-btn.active,.filter-btn:hover{border-color:var(--accent);color:var(--accent2);background:rgba(59,130,246,0.08);}
+.filter-btn.active{font-weight:500;}
+.main{max-width:720px;margin:0 auto;padding:28px 24px;}
+.question-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:28px;margin-bottom:20px;animation:slideIn 0.25s ease;}
+@keyframes slideIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.q-meta{display:flex;gap:8px;align-items:center;margin-bottom:18px;flex-wrap:wrap;}
+.q-tag{padding:3px 10px;border-radius:20px;font-size:0.68rem;font-weight:500;text-transform:uppercase;letter-spacing:0.04em;}
+.tag-comparaison{background:#1e3a5f;color:#60a5fa;}
+.tag-grammaire{background:#1a3a2a;color:#34d399;}
+.tag-vocabulaire{background:#3a2a1a;color:#fb923c;}
+.tag-prepositions{background:#2a1a3a;color:#c084fc;}
+.tag-connecteurs{background:#3a1a2a;color:#f472b6;}
+.tag-adjectifs{background:#1a2a3a;color:#38bdf8;}
+.tag-futur{background:#1a3a2a;color:#a7f3d0;}
+.tag-reflexifs{background:#1a2535;color:#7dd3fc;}
+.tag-traduction{background:#2a1a1a;color:#fca5a5;}
+.tag-couleurs{background:#2a2a1a;color:#fde68a;}
+.q-diff{font-size:0.68rem;color:var(--text3);margin-left:auto;}
+.q-instruction{font-size:0.8rem;color:var(--text3);margin-bottom:6px;font-style:italic;}
+.q-text{font-family:'Syne',sans-serif;font-size:1.18rem;font-weight:600;color:var(--text);margin-bottom:6px;line-height:1.45;}
+.q-hint{font-size:0.78rem;color:var(--text3);margin-bottom:22px;}
+.q-hint span{color:var(--accent2);}
+.options{display:flex;flex-direction:column;gap:9px;margin-bottom:18px;}
+.option{padding:13px 16px;border-radius:10px;border:1px solid var(--border);background:var(--surface2);color:var(--text);cursor:pointer;font-family:'DM Sans',sans-serif;font-size:0.93rem;text-align:left;transition:all 0.16s;display:flex;align-items:center;gap:11px;}
+.option:hover:not(:disabled){border-color:var(--accent);background:rgba(59,130,246,0.08);}
+.option.correct{border-color:var(--green);background:rgba(16,185,129,0.1);color:#6ee7b7;}
+.option.wrong{border-color:var(--red);background:rgba(239,68,68,0.08);color:#fca5a5;}
+.option-letter{width:22px;height:22px;border-radius:5px;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:0.72rem;font-weight:600;flex-shrink:0;font-family:'Syne',sans-serif;}
+.option.correct .option-letter{background:var(--green);color:#fff;}
+.option.wrong .option-letter{background:var(--red);color:#fff;}
+.text-input-wrap{margin-bottom:18px;}
+.text-input{width:100%;padding:13px 16px;border-radius:10px;border:1px solid var(--border);background:var(--surface2);color:var(--text);font-family:'DM Sans',sans-serif;font-size:0.97rem;outline:none;transition:border-color 0.18s;}
+.text-input:focus{border-color:var(--accent);}
+.text-input.correct{border-color:var(--green);background:rgba(16,185,129,0.06);}
+.text-input.wrong{border-color:var(--red);background:rgba(239,68,68,0.05);}
+.fill-blank-sentence{font-size:1.05rem;line-height:2.2;margin-bottom:18px;}
+.blank-input{display:inline-block;border:none;border-bottom:2px solid var(--accent);background:transparent;color:var(--accent2);font-family:'DM Sans',sans-serif;font-size:0.97rem;width:110px;text-align:center;outline:none;padding:2px 4px;transition:border-color 0.18s;margin:0 3px;}
+.blank-input.correct{border-color:var(--green);color:#6ee7b7;}
+.blank-input.wrong{border-color:var(--red);color:#fca5a5;}
+.feedback{padding:14px 16px;border-radius:10px;margin-bottom:18px;display:none;animation:fadeIn 0.22s ease;}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.feedback.correct-fb{background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.25);}
+.feedback.wrong-fb{background:rgba(239,68,68,0.06);border:1px solid rgba(239,68,68,0.2);}
+.feedback-title{font-family:'Syne',sans-serif;font-weight:700;font-size:0.88rem;margin-bottom:4px;}
+.feedback.correct-fb .feedback-title{color:var(--green);}
+.feedback.wrong-fb .feedback-title{color:var(--red);}
+.feedback-body{font-size:0.83rem;color:var(--text2);line-height:1.6;}
+.answer-reveal{color:var(--accent2);font-weight:500;}
+.btn-row{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;}
+.btn{padding:10px 22px;border-radius:10px;border:none;cursor:pointer;font-family:'Syne',sans-serif;font-weight:600;font-size:0.88rem;transition:all 0.16s;}
+.btn-primary{background:var(--accent);color:#fff;}
+.btn-primary:hover{background:#2563eb;}
+.btn-secondary{background:var(--surface2);color:var(--text2);border:1px solid var(--border);}
+.btn-secondary:hover{border-color:var(--accent);color:var(--accent2);}
+.btn-skip{background:transparent;color:var(--text3);border:1px solid var(--border);}
+.btn-skip:hover{color:var(--text2);}
+.score-flash{position:fixed;top:76px;right:22px;padding:9px 16px;border-radius:10px;font-family:'Syne',sans-serif;font-weight:700;font-size:0.97rem;z-index:200;animation:flashAnim 1.2s ease forwards;pointer-events:none;}
+@keyframes flashAnim{0%{opacity:0;transform:translateY(-8px) scale(0.9)}20%{opacity:1;transform:translateY(0) scale(1)}70%{opacity:1}100%{opacity:0;transform:translateY(-8px)}}
+.flash-correct{background:rgba(16,185,129,0.15);border:1px solid var(--green);color:#6ee7b7;}
+.flash-wrong{background:rgba(239,68,68,0.1);border:1px solid var(--red);color:#fca5a5;}
+.counter-badge{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:3px 10px;font-size:0.72rem;color:var(--text3);}
+@media(max-width:600px){.header{padding:10px 14px;}.main{padding:16px 14px;}.question-card{padding:18px;}.stats-bar{gap:10px;}.progress-wrap{display:none;}}
+</style>
+</head>
+<body>
+<header class="header">
+  <div class="logo">Français <span>A1.2</span></div>
+  <div class="progress-wrap">
+    <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+    <div class="progress-lbl" id="progressLbl">Score: 0%</div>
+  </div>
+  <div class="stats-bar">
+    <div class="stat"><div class="stat-val streak" id="streakVal">0</div><div class="stat-lbl">Streak</div></div>
+    <div class="stat"><div class="stat-val score-val" id="scoreVal">0</div><div class="stat-lbl">Correct</div></div>
+    <div class="stat"><div class="stat-val" id="totalVal">0</div><div class="stat-lbl">Total</div></div>
+    <div class="stat"><div class="stat-val" id="qBankVal">0</div><div class="stat-lbl">Bank</div></div>
+  </div>
+</header>
+<div class="filter-bar">
+  <button class="filter-btn active" onclick="setFilter('all',this)">Tout (250+)</button>
+  <button class="filter-btn" onclick="setFilter('comparaison',this)">Comparaisons</button>
+  <button class="filter-btn" onclick="setFilter('futur',this)">Futur Proche</button>
+  <button class="filter-btn" onclick="setFilter('reflexifs',this)">Verbes Pronominaux</button>
+  <button class="filter-btn" onclick="setFilter('prepositions',this)">Prépositions</button>
+  <button class="filter-btn" onclick="setFilter('vocabulaire',this)">Vocabulaire</button>
+  <button class="filter-btn" onclick="setFilter('connecteurs',this)">Connecteurs</button>
+  <button class="filter-btn" onclick="setFilter('adjectifs',this)">Place des Adjectifs</button>
+  <button class="filter-btn" onclick="setFilter('grammaire',this)">Grammaire</button>
+  <button class="filter-btn" onclick="setFilter('couleurs',this)">Couleurs</button>
+  <button class="filter-btn" onclick="setFilter('traduction',this)">Traduction</button>
+</div>
+<main class="main" id="mainContent"></main>
+
+<script>
+const QUESTIONS=[
+// ══════════════════════════════════════════
+// COMPARAISONS (1) — ADJECTIVES  ~20 Qs
+// ══════════════════════════════════════════
+{id:1,cat:'comparaison',sub:'Adj',type:'mcq',instruction:'Choisissez la structure correcte.',text:'La robe rose est _____ chère _____ la robe jaune.',options:['plus ... que','plus ... de','aussi ... à','moins ... à'],answer:0,explanation:'Structure adj: A + être + plus/moins/aussi + adjectif + que + B'},
+{id:2,cat:'comparaison',sub:'Adj',type:'mcq',instruction:'Comparatif irrégulier.',text:'Ce café est _____ que le café de Louis.',options:['plus bon','meilleur','le meilleur','bon que'],answer:1,explanation:'"Bon" → comparatif irrégulier: meilleur(e). Jamais "plus bon".'},
+{id:3,cat:'comparaison',sub:'Adj',type:'mcq',instruction:'Comparatif irrégulier.',text:'Le devoir de Hugo est _____ que le devoir de Pauline.',options:['plus mauvais','plus pire','pire','mauvaise'],answer:2,explanation:'"Mauvais" → comparatif irrégulier: pire. Jamais "plus pire".'},
+{id:4,cat:'comparaison',sub:'Adj',type:'text',instruction:'Traduisez en français.',text:'This bag is less expensive than that one.',hint:'moins + adj + que',answer:['ce sac est moins cher que celui-là','ce sac est moins cher que cet autre','ce sac est moins cher'],explanation:'Ce sac est moins cher que celui-là.'},
+{id:5,cat:'comparaison',sub:'Adj',type:'mcq',instruction:'Complétez.',text:'Paris est _____ grand _____ Lyon.',options:['plus ... que','plus ... de','aussi ... à','moins ... comme'],answer:0,explanation:'plus + adj + que'},
+{id:6,cat:'comparaison',sub:'Adj',type:'mcq',instruction:'Aussi = égalité.',text:'Marie est _____ intelligente _____ Sophie.',options:['aussi ... que','autant ... que','plus ... que','aussi ... de'],answer:0,explanation:'Égalité avec adjectif: aussi + adj + que'},
+{id:7,cat:'comparaison',sub:'Adj',type:'mcq',instruction:'Choisissez.',text:'Mon appartement est _____ grand que le tien.',options:['moins','autant','aussi peu','autant de'],answer:0,explanation:'Infériorité: moins + adj + que'},
+{id:8,cat:'comparaison',sub:'Adj',type:'text',instruction:'Traduisez.',text:'Lyon is less beautiful than Paris (according to Milo).',hint:'moins ... que',answer:['lyon est moins belle que paris','lyon est moins beau que paris'],explanation:'Lyon est moins belle/beau que Paris.'},
+{id:9,cat:'comparaison',sub:'Adj',type:'mcq',instruction:'Forme correcte.',text:'"plus bon" est:',options:['Correct','Incorrect — on dit meilleur','Correct uniquement au pluriel','Correct avec être'],answer:1,explanation:'"Plus bon" est toujours incorrect. On dit toujours meilleur / meilleure.'},
+{id:10,cat:'comparaison',sub:'Adj',type:'mcq',instruction:'Choisissez la bonne comparaison.',text:'Cet hôtel est _____ confortable que le précédent.',options:['aussi','autant','autant de','beaucoup'],answer:0,explanation:'Égalité + adjectif: aussi + adj + que'},
+// ── COMPARAISONS (2) — ADVERBES  ──
+{id:11,cat:'comparaison',sub:'Adv',type:'mcq',instruction:'Structure adverbe.',text:'Je me lève _____ rapidement _____ lui.',options:['plus ... que','plus ... de','autant ... que','aussi ... à'],answer:0,explanation:'Adverbe: A + verbe + plus/moins/aussi + adverbe + que + B'},
+{id:12,cat:'comparaison',sub:'Adv',type:'text',instruction:'Marie lit lentement. John lit lentement aussi. Faites la comparaison.',text:'Marie lit...',hint:'aussi + adverbe + que',answer:['marie lit aussi lentement que john','marie lit aussi lentement que lui'],explanation:'Marie lit aussi lentement que John.'},
+{id:13,cat:'comparaison',sub:'Adv',type:'mcq',instruction:'Choisissez.',text:'Les Français se couchent _____ tard que les Suédois.',options:['plus','moins','autant','aussi peu'],answer:0,explanation:'Les Français se couchent plus tard que les Suédois.'},
+{id:14,cat:'comparaison',sub:'Adv',type:'text',instruction:'Il parle calmement. Elle parle fort. Comparez.',text:'Il parle _____ calmement qu\'elle.',hint:'plus',answer:['il parle plus calmement qu\'elle','il parle plus calmement que elle'],explanation:'Il parle plus calmement qu\'elle.'},
+{id:15,cat:'comparaison',sub:'Adv',type:'mcq',instruction:'Choisissez.',text:'Je cours vite. Paul court vite aussi. → Je cours _____ Paul.',options:['plus vite que','aussi vite que','autant vite que','moins vite de'],answer:1,explanation:'Égalité adverbe: aussi + adv + que'},
+{id:16,cat:'comparaison',sub:'Adv',type:'text',instruction:'Traduisez.',text:'She works more seriously than her colleagues.',hint:'plus sérieusement que',answer:['elle travaille plus sérieusement que ses collègues','elle travaille plus sérieusement que ses collegues'],explanation:'Elle travaille plus sérieusement que ses collègues.'},
+// ── COMPARAISONS (2) — VERBES  ──
+{id:17,cat:'comparaison',sub:'Verbe',type:'mcq',instruction:'Structure verbe.',text:'Je mange beaucoup. Il ne mange pas beaucoup. → Je mange _____.',options:['plus que lui','plus de lui','autant que lui','plus comme lui'],answer:0,explanation:'Verbe: A + verbe + plus/moins/autant + que + B'},
+{id:18,cat:'comparaison',sub:'Verbe',type:'mcq',instruction:'Égalité de verbe.',text:'Ma sœur cuisine. Mon frère cuisine aussi. → Ma sœur cuisine _____.',options:['autant que mon frère','aussi que lui','autant de lui','pareil'],answer:0,explanation:'Égalité verbe: autant que (pas d\'adverbe ni de "de")'},
+{id:19,cat:'comparaison',sub:'Verbe',type:'text',instruction:'Lou travaille 9h. Pauline travaille 7h. Comparez.',text:'Lou travaille...',hint:'plus que',answer:['lou travaille plus que pauline','lou travaille plus que lui'],explanation:'Lou travaille plus que Pauline.'},
+{id:20,cat:'comparaison',sub:'Verbe',type:'mcq',instruction:'Attention à autant vs autant de!',text:'Avec un verbe seul (sans nom): on utilise _____ que.',options:['autant','autant de','autant d\'','plus de'],answer:0,explanation:'"autant que" avec verbe seul. "autant de + NOM + que" avec un nom.'},
+{id:21,cat:'comparaison',sub:'Verbe',type:'mcq',instruction:'Choisissez.',text:'Vous lisez beaucoup. Nous lisons peu. → Vous lisez _____ nous.',options:['plus que','moins que','autant que','aussi que'],answer:0,explanation:'Vous lisez plus que nous.'},
+// ── COMPARAISONS (3) — QUANTITÉS  ──
+{id:22,cat:'comparaison',sub:'Quantité',type:'mcq',instruction:'Quantité: choisissez.',text:'Anna a 2 enfants, j\'ai 3 enfants. J\'ai _____ enfants qu\'Anna.',options:['plus des','plus de','autant de','plus d\''],answer:3,explanation:'Plus d\' devant voyelle: plus d\'enfants (élision). Plus de + consonne.'},
+{id:23,cat:'comparaison',sub:'Quantité',type:'fill',instruction:'Complétez avec plus de/d\', autant de, moins de.',text:'J\'ai _____ livres _____ toi. (plus)',blanks:['plus de','que'],explanation:'Plus de + nom (consonne) + que'},
+{id:24,cat:'comparaison',sub:'Quantité',type:'fill',instruction:'Complétez.',text:'Il y a _____ bruit _____ hier. (moins)',blanks:['moins de','que'],explanation:'Moins de + nom + que'},
+{id:25,cat:'comparaison',sub:'Quantité',type:'fill',instruction:'Complétez.',text:'Nous avons _____ devoirs _____ la semaine dernière. (autant)',blanks:['autant de','que'],explanation:'Autant de + nom + que'},
+{id:26,cat:'comparaison',sub:'Quantité',type:'mcq',instruction:'Élision — choisissez.',text:'Elle a _____ idées que ses collègues.',options:['plus de','plus d\'','autant des','moins de d\''],answer:1,explanation:'Plus d\' devant voyelle: idées commence par "i" → plus d\'idées'},
+{id:27,cat:'comparaison',sub:'Quantité',type:'mcq',instruction:'Élision.',text:'Mon sac contient _____ affaires que ton sac.',options:['plus de','plus d\'','autant des','moins du'],answer:1,explanation:'affaires commence par "a" → élision: plus d\'affaires'},
+{id:28,cat:'comparaison',sub:'Quantité',type:'text',instruction:'Traduisez.',text:'She has fewer ideas than her colleagues.',hint:'moins d\'... que',answer:['elle a moins d\'idées que ses collègues','elle a moins d idées que ses collègues'],explanation:'Elle a moins d\'idées que ses collègues.'},
+{id:29,cat:'comparaison',sub:'Quantité',type:'mcq',instruction:'Choisissez.',text:'Tu manges _____ fruits _____ ton frère.',options:['autant de ... que','autant d\' ... que','autant ... que','autant des ... que'],answer:0,explanation:'Autant de + nom consonne (fruits) + que'},
+{id:30,cat:'comparaison',sub:'Quantité',type:'text',instruction:'Traduisez.',text:'This company has as many women as the other one.',hint:'autant de ... que',answer:['cette entreprise a autant de femmes que l\'autre','cette entreprise a autant de femme que l autre'],explanation:'Cette entreprise a autant de femmes que l\'autre.'},
+// ── COMPARAISONS MIX ──
+{id:31,cat:'comparaison',sub:'Mix',type:'mcq',instruction:'Remettez dans l\'ordre.',text:'lui / mange / je / vite / que / plus → ?',options:['Je mange plus vite que lui.','Je lui mange plus vite que.','Plus vite je mange que lui.','Je mange vite plus que lui.'],answer:0,explanation:'Structure correcte: Sujet + verbe + plus + adverbe + que + pronom'},
+{id:32,cat:'comparaison',sub:'Mix',type:'mcq',instruction:'Ordre correct?',text:'"Les adultes mangent moins que les enfants les fruits."',options:['Correct','Incorrect — "les fruits" doit venir après "mangent"','Incorrect — on dit autant','Correct mais familier'],answer:1,explanation:'Les adultes mangent moins de fruits que les enfants. (quantité)'},
+{id:33,cat:'comparaison',sub:'Mix',type:'mcq',instruction:'Choisissez la bonne structure.',text:'J\'ai _____ amis _____ lui. (more)',options:['plus d\' ... que','plus des ... que','plus de ... comme','plus d\' ... de'],answer:0,explanation:'Plus d\' (élision devant "amis") + que'},
+{id:34,cat:'comparaison',sub:'Mix',type:'mcq',instruction:'Identifiez la structure.',text:'"Je dors mieux qu\'avant."',options:['Comparaison adverbe','Comparaison adjectif','Comparaison verbe','Comparaison quantité'],answer:0,explanation:'Mieux = comparatif irrégulier de "bien" (adverbe). Je dors mieux qu\'avant.'},
+{id:35,cat:'comparaison',sub:'Mix',type:'mcq',instruction:'Comparatif irrégulier de "bien".',text:'"bien" → comparatif supérieur:',options:['plus bien','meilleur','mieux','plus bon'],answer:2,explanation:'"bien" (adverbe) → mieux. "bon" (adjectif) → meilleur.'},
+// ══════════════════════════════════════════
+// FUTUR PROCHE  ~25 Qs
+// ══════════════════════════════════════════
+{id:36,cat:'futur',type:'mcq',instruction:'Structure du futur proche.',text:'Le futur proche se forme avec:',options:['avoir + participe passé','être + infinitif','aller (présent) + infinitif','vouloir + infinitif'],answer:2,explanation:'Futur proche = aller conjugué au présent + infinitif du verbe principal'},
+{id:37,cat:'futur',type:'mcq',instruction:'Conjuguez.',text:'Demain, je _____ à l\'université. (aller)',options:['vais aller','vai aller','vais allé','je vais'],answer:0,explanation:'je vais + aller (infinitif)'},
+{id:38,cat:'futur',type:'mcq',instruction:'Conjuguez.',text:'Il _____ au café demain. (travailler)',options:['va travailler','vais travailler','allons travailler','va travaille'],answer:0,explanation:'il/elle/on va + infinitif'},
+{id:39,cat:'futur',type:'mcq',instruction:'Conjuguez.',text:'Nous _____ ce soir. (sortir)',options:['allons sortir','allons sorti','vont sortir','nous sortirons'],answer:0,explanation:'nous allons + infinitif'},
+{id:40,cat:'futur',type:'mcq',instruction:'Conjuguez.',text:'Vous _____ à Paris la semaine prochaine. (partir)',options:['allez partir','aller partir','allons partir','va partir'],answer:0,explanation:'vous allez + infinitif'},
+{id:41,cat:'futur',type:'mcq',instruction:'Conjuguez.',text:'Elles _____ ce film ce soir. (regarder)',options:['vont regarder','vont regardé','va regarder','elles vont'],answer:0,explanation:'elles vont + infinitif'},
+{id:42,cat:'futur',type:'text',instruction:'Mettez au futur proche.',text:'Je mange un petit-déjeuner. → Demain...',hint:'je vais + infinitif',answer:['je vais manger un petit-déjeuner','demain je vais manger un petit-déjeuner','je vais manger'],explanation:'Je vais manger un petit-déjeuner.'},
+{id:43,cat:'futur',type:'text',instruction:'Mettez au futur proche.',text:'Je prends le bus. → Demain...',hint:'je vais prendre',answer:['je vais prendre le bus','demain je vais prendre le bus'],explanation:'Je vais prendre le bus.'},
+{id:44,cat:'futur',type:'text',instruction:'Mettez au futur proche.',text:'Il rentre à la maison. → Ce soir...',hint:'il va rentrer',answer:['il va rentrer à la maison','ce soir il va rentrer à la maison','il va rentrer'],explanation:'Il va rentrer à la maison.'},
+{id:45,cat:'futur',type:'mcq',instruction:'Futur proche NÉGATIF.',text:'Je _____ (ne pas travailler) demain.',options:['ne vais pas travailler','vais ne pas travailler','vais pas travailler','ne vais travailler pas'],answer:0,explanation:'Négation futur proche: ne + aller + pas + infinitif. Je ne vais pas travailler.'},
+{id:46,cat:'futur',type:'mcq',instruction:'Négation.',text:'Il _____ (ne pas venir) à la fête.',options:['ne va pas venir','va ne pas venir','ne vais pas venir','n\'allons pas venir'],answer:0,explanation:'il ne va pas venir'},
+{id:47,cat:'futur',type:'mcq',instruction:'Verbe pronominal au futur proche.',text:'Demain, je _____ (se lever) à 10h.',options:['vais me lever','me vais lever','vais lever me','va me lever'],answer:0,explanation:'FP + pronominal: aller conjugué + pronom réfléchi + infinitif. Je vais me lever.'},
+{id:48,cat:'futur',type:'mcq',instruction:'Verbe pronominal au futur proche.',text:'Elle _____ (se coucher) tôt ce soir.',options:['va se coucher','se va coucher','va coucher se','vais se coucher'],answer:0,explanation:'elle va se coucher — pronom avant l\'infinitif'},
+{id:49,cat:'futur',type:'mcq',instruction:'Identifiez le temps.',text:'"je vais prendre" est:',options:['Futur proche','Présent','Infinitif','Passé composé'],answer:0,explanation:'je vais (présent aller) + prendre (infinitif) = futur proche'},
+{id:50,cat:'futur',type:'mcq',instruction:'Identifiez le temps.',text:'"il téléphone" est:',options:['Présent','Futur proche','Infinitif','Passé'],answer:0,explanation:'Présent: sujet + verbe conjugué au présent'},
+{id:51,cat:'futur',type:'mcq',instruction:'Identifiez le temps.',text:'"se marier" est:',options:['Présent','Futur proche','Infinitif','Passé composé'],answer:2,explanation:'Infinitif: forme de base, pas conjuguée'},
+{id:52,cat:'futur',type:'mcq',instruction:'Identifiez le temps.',text:'"nous allons sortir" est:',options:['Présent','Futur proche','Infinitif','Passé'],answer:1,explanation:'nous allons (présent) + sortir (infinitif) = futur proche'},
+{id:53,cat:'futur',type:'text',instruction:'Malika — Lundi 10h: Préparation du voyage à Paris.',text:'Lundi, à dix heures, Malika...',hint:'va + infinitif du nom-verbe',answer:['va préparer son voyage à paris','malika va préparer son voyage','va préparer le voyage à paris'],explanation:'Malika va préparer son voyage à Paris.'},
+{id:54,cat:'futur',type:'text',instruction:'Malika — Lundi 13h: Déjeuner avec Mélanie.',text:'À treize heures, Malika...',hint:'va déjeuner',answer:['va déjeuner avec mélanie','malika va déjeuner avec mélanie'],explanation:'Malika va déjeuner avec Mélanie.'},
+{id:55,cat:'futur',type:'text',instruction:'Malika — Mardi 16h: Inscription à l\'université.',text:'Mardi à seize heures, elle...',hint:'va + s\'inscrire',answer:['va s\'inscrire à l\'université','elle va s inscrire à l université'],explanation:'Elle va s\'inscrire à l\'université.'},
+{id:56,cat:'futur',type:'text',instruction:'Traduisez.',text:'They are going to watch television tonight.',hint:'vont + regarder',answer:['ils vont regarder la télévision ce soir','ils vont regarder la télé ce soir','elles vont regarder la télévision ce soir'],explanation:'Ils vont regarder la télévision ce soir.'},
+{id:57,cat:'futur',type:'mcq',instruction:'Choisissez la forme correcte.',text:'Tu _____ (venir) demain ?',options:['vas venir','va venir','vais venir','allez venir'],answer:0,explanation:'tu vas + infinitif'},
+{id:58,cat:'futur',type:'mcq',instruction:'Futur proche négatif pronominal.',text:'Demain, je _____ (ne pas se lever) tôt.',options:['ne vais pas me lever','me ne vais pas lever','vais pas me lever','ne me vais pas lever'],answer:0,explanation:'Je ne vais pas me lever tôt. (ne ... pas encadrent aller)'},
+{id:59,cat:'futur',type:'text',instruction:'Production écrite partielle. Décrivez 2 activités de vos prochaines vacances.',text:'Pendant mes vacances, je...',hint:'vais + infinitif, plage, faire',answer:['vais aller à la plage','je vais aller à la plage','vais faire'],explanation:'Ex: Je vais aller à la plage. Je vais faire du sport.'},
+// ══════════════════════════════════════════
+// VERBES PRONOMINAUX  ~25 Qs
+// ══════════════════════════════════════════
+{id:60,cat:'reflexifs',type:'mcq',instruction:'Conjuguez au présent.',text:'Je _____ (se lever) à 8h.',options:['me lève','me lever','m\'élève','me lèves'],answer:0,explanation:'se lever → je me lève (accent grave devant syllabe muette)'},
+{id:61,cat:'reflexifs',type:'mcq',instruction:'Conjuguez.',text:'Tu _____ (se lever) à quelle heure?',options:['te lèves','te lever','se lèves','te levez'],answer:0,explanation:'tu te lèves'},
+{id:62,cat:'reflexifs',type:'mcq',instruction:'Conjuguez.',text:'Il _____ (se lever) à 7h.',options:['se lève','se lèves','me lève','s\'élève'],answer:0,explanation:'il/elle/on se lève'},
+{id:63,cat:'reflexifs',type:'mcq',instruction:'Conjuguez.',text:'Nous _____ (se lever) tôt.',options:['nous levons','nous se levons','nous nous levons','on lève'],answer:2,explanation:'nous nous levons — pronom réfléchi "nous" + levons'},
+{id:64,cat:'reflexifs',type:'mcq',instruction:'Conjuguez.',text:'Vous _____ (se lever) à 9h?',options:['vous vous levez','vous levez','se levez','vous lèvez'],answer:0,explanation:'vous vous levez'},
+{id:65,cat:'reflexifs',type:'mcq',instruction:'Conjuguez.',text:'Ils _____ (se lever) tard le week-end.',options:['se lèvent','se lever','me lèvent','ils lèvent'],answer:0,explanation:'ils/elles se lèvent'},
+{id:66,cat:'reflexifs',type:'mcq',instruction:'Conjuguez.',text:'Je _____ (se réveiller) à 7h30.',options:['me réveille','me réveilles','s\'éveille','me réveiller'],answer:0,explanation:'je me réveille'},
+{id:67,cat:'reflexifs',type:'mcq',instruction:'Conjuguez.',text:'Elle _____ (se coucher) à 23h.',options:['se couche','se couches','me couche','se couchent'],answer:0,explanation:'elle se couche'},
+{id:68,cat:'reflexifs',type:'mcq',instruction:'Conjuguez.',text:'Je _____ (s\'habiller) rapidement.',options:['m\'habille','me habille','s\'habille','m\'habilles'],answer:0,explanation:'s\'habiller → je m\'habille (élision: m\' devant voyelle)'},
+{id:69,cat:'reflexifs',type:'mcq',instruction:'Conjuguez.',text:'Tu _____ (se doucher) tous les matins?',options:['te douches','te douche','se douches','te douchet'],answer:0,explanation:'tu te douches'},
+{id:70,cat:'reflexifs',type:'mcq',instruction:'Conjuguez.',text:'Ils _____ (se préparer) pour l\'examen.',options:['se préparent','se prépare','nous préparons','me préparent'],answer:0,explanation:'ils se préparent'},
+{id:71,cat:'reflexifs',type:'text',instruction:'Traduisez.',text:'She wakes up at 7am.',hint:'se réveiller',answer:['elle se réveille à 7h','elle se réveille à sept heures','elle se réveille à 7 heures'],explanation:'Elle se réveille à 7h.'},
+{id:72,cat:'reflexifs',type:'text',instruction:'Traduisez.',text:'I get ready quickly in the morning.',hint:'se préparer',answer:['je me prépare rapidement le matin','je me prépare vite le matin'],explanation:'Je me prépare rapidement le matin.'},
+{id:73,cat:'reflexifs',type:'text',instruction:'Traduisez.',text:'We go to bed at 10pm.',hint:'se coucher, nous nous',answer:['nous nous couchons à 22h','nous nous couchons à dix heures','on se couche à 22h'],explanation:'Nous nous couchons à 22h. / On se couche à 22h.'},
+{id:74,cat:'reflexifs',type:'mcq',instruction:'FP + pronominal.',text:'Demain, je _____ (se lever) plus tard.',options:['vais me lever','va me lever','me vais lever','vais lever me'],answer:0,explanation:'FP + pronominal: je vais me lever (pronom reste avant l\'infinitif)'},
+{id:75,cat:'reflexifs',type:'mcq',instruction:'Négation.',text:'Il _____ (ne pas se coucher) tôt.',options:['ne se couche pas','se ne couche pas','ne couche pas se','pas se couche'],answer:0,explanation:'Négation: ne + pronom réfléchi + verbe + pas. Il ne se couche pas.'},
+{id:76,cat:'reflexifs',type:'mcq',instruction:'Élision.',text:'Je _____ (s\'appeler) Mridul.',options:['m\'appelle','me appelle','s\'appelle','m\'appelles'],answer:0,explanation:'s\'appeler → je m\'appelle (élision devant voyelle)'},
+{id:77,cat:'reflexifs',type:'mcq',instruction:'Pronom réfléchi pour "on".',text:'On _____ (se coucher) tôt ici.',options:['se couche','on couche','nous couche','te couche'],answer:0,explanation:'"On" prend le pronom réfléchi "se": on se couche'},
+{id:78,cat:'reflexifs',type:'text',instruction:'Répondez à la question.',text:'Sylvie se lève à quelle heure? (7h30)',hint:'Elle se lève à...',answer:['elle se lève à 7h30','elle se lève à sept heures trente'],explanation:'Elle se lève à 7h30.'},
+{id:79,cat:'reflexifs',type:'mcq',instruction:'Choisissez la bonne phrase.',text:'Comparaison avec verbe pronominal:',options:['Je me lève plus tôt que lui.','Je me lève plus tôt de lui.','Je lève plus tôt que lui.','Me je lève plus tôt que lui.'],answer:0,explanation:'Je me lève plus tôt que lui. (comparaison adverbe + réfléchi)'},
+{id:80,cat:'reflexifs',type:'mcq',instruction:'Ordre correct.',text:'Futur proche + pronominal négatif: je ne vais pas _____ ce soir.',options:['me coucher','coucher me','me couche','coucher'],answer:0,explanation:'Je ne vais pas me coucher ce soir. (pronom avant infinitif)'},
+{id:81,cat:'reflexifs',type:'text',instruction:'Phrase complète.',text:'Write: "Every day I shower, I get dressed, and I go to HEC."',hint:'se doucher, s\'habiller, aller',answer:['je me douche je m\'habille et je vais à hec','tous les jours je me douche je m\'habille et je vais à hec'],explanation:'Tous les jours, je me douche, je m\'habille et je vais à HEC.'},
+// ══════════════════════════════════════════
+// PRÉPOSITIONS DE LIEUX  ~25 Qs
+// ══════════════════════════════════════════
+{id:82,cat:'prepositions',type:'mcq',instruction:'Choisissez.',text:'Le chat est _____ le lit. (on top of)',options:['sur','sous','dans','devant'],answer:0,explanation:'sur = on top of'},
+{id:83,cat:'prepositions',type:'mcq',instruction:'Choisissez.',text:'Le chat est _____ le lit. (under)',options:['sur','sous','derrière','entre'],answer:1,explanation:'sous = under/beneath'},
+{id:84,cat:'prepositions',type:'mcq',instruction:'Choisissez.',text:'La lampe est _____ la chaise. (to the left of)',options:['à droite de','à gauche de','en face de','derrière'],answer:1,explanation:'à gauche de = to the left of'},
+{id:85,cat:'prepositions',type:'mcq',instruction:'Choisissez.',text:'Le chat est _____ le lit. (in front of)',options:['devant','derrière','dans','entre'],answer:0,explanation:'devant = in front of'},
+{id:86,cat:'prepositions',type:'mcq',instruction:'Choisissez.',text:'Le livre est _____ la table et la lampe.',options:['entre','dans','devant','à côté de'],answer:0,explanation:'entre = between'},
+{id:87,cat:'prepositions',type:'mcq',instruction:'Choisissez.',text:'La pharmacie est _____ l\'hôpital. (opposite)',options:['à côté de','en face de','derrière','sur'],answer:1,explanation:'en face de = opposite, facing'},
+{id:88,cat:'prepositions',type:'text',instruction:'Traduisez.',text:'The wardrobe is next to the bed.',hint:'à côté de',answer:['l\'armoire est à côté du lit','l armoire est à côté du lit'],explanation:'L\'armoire est à côté du lit.'},
+{id:89,cat:'prepositions',type:'mcq',instruction:'Choisissez.',text:'La salle de bain est _____ de la cuisine. (above)',options:['en dessous','au-dessus','à côté','derrière'],answer:1,explanation:'au-dessus de = above; en dessous de = below'},
+{id:90,cat:'prepositions',type:'mcq',instruction:'Choisissez.',text:'Le tapis est _____ le salon.',options:['dans','sur','devant','entre'],answer:0,explanation:'dans = inside, within'},
+{id:91,cat:'prepositions',type:'mcq',instruction:'Choisissez.',text:'"behind the door" en français:',options:['devant la porte','derrière la porte','dans la porte','sur la porte'],answer:1,explanation:'derrière = behind'},
+{id:92,cat:'prepositions',type:'mcq',instruction:'à côté de = ?',text:'"à côté de" est synonyme de:',options:['loin de','en face de','près de','derrière'],answer:2,explanation:'à côté de = près de (both mean "next to / near")'},
+{id:93,cat:'prepositions',type:'mcq',instruction:'Vrai ou Faux?',text:'"La cave est sous le garage." — Vrai ou faux?',options:['Vrai','Faux'],answer:0,explanation:'Vrai — la cave est sous le sol, donc sous le garage.'},
+{id:94,cat:'prepositions',type:'mcq',instruction:'Choisissez.',text:'"L\'entrée est à droite du garage." — Vrai ou faux?',options:['Vrai','Faux'],answer:0,explanation:'Vrai — dans le plan de la maison, l\'entrée est à droite du garage.'},
+{id:95,cat:'prepositions',type:'text',instruction:'Décrivez.',text:'The cat is between the sofa and the lamp.',hint:'entre ... et ...',answer:['le chat est entre le canapé et la lampe','le chat est entre le canape et la lampe'],explanation:'Le chat est entre le canapé et la lampe.'},
+{id:96,cat:'prepositions',type:'mcq',instruction:'Choisissez.',text:'Le miroir est _____ la lampe. (to the right of)',options:['à droite de','à gauche de','derrière','sur'],answer:0,explanation:'à droite de = to the right of'},
+{id:97,cat:'prepositions',type:'text',instruction:'Décrivez votre chambre (exemple).',text:'In my room, the wardrobe is next to the window and the rug is on the floor.',hint:'à côté de, sur',answer:['dans ma chambre l\'armoire est à côté de la fenêtre et le tapis est sur le sol','dans ma chambre l armoire est à côté de la fenêtre'],explanation:'Dans ma chambre, l\'armoire est à côté de la fenêtre et le tapis est sur le sol.'},
+{id:98,cat:'prepositions',type:'mcq',instruction:'Utilisez les prépositions.',text:'Le chat est _____ la chaise. (sitting between two chairs)',options:['sur','entre','sous','devant'],answer:1,explanation:'entre = between'},
+{id:99,cat:'prepositions',type:'mcq',instruction:'Choisissez.',text:'"Le salon est _____ la cuisine et l\'entrée."',options:['entre','dans','sur','devant'],answer:0,explanation:'entre = between. Le salon est entre la cuisine et l\'entrée.'},
+{id:100,cat:'prepositions',type:'mcq',instruction:'Contraction.',text:'"à côté de + le jardin" →',options:['à côté de le jardin','à côté du jardin','à côté des jardin','au côté de jardin'],answer:1,explanation:'de + le = du. À côté du jardin.'},
+{id:101,cat:'prepositions',type:'mcq',instruction:'Contraction.',text:'"en face de + les toilettes" →',options:['en face de les toilettes','en face du toilettes','en face des toilettes','en face de toilettes'],answer:2,explanation:'de + les = des. En face des toilettes.'},
+{id:102,cat:'prepositions',type:'text',instruction:'Décrivez.',text:'The television is in front of the sofa.',hint:'devant',answer:['la télévision est devant le canapé','la télé est devant le canapé','la television est devant le canape'],explanation:'La télévision est devant le canapé.'},
+// ══════════════════════════════════════════
+// VOCABULAIRE — MAISON & MEUBLES  ~30 Qs
+// ══════════════════════════════════════════
+{id:103,cat:'vocabulaire',sub:'Maison',type:'mcq',instruction:'Traduisez.',text:'"ground floor" en français:',options:['le premier étage','le rez-de-chaussée','le sous-sol','le dernier étage'],answer:1,explanation:'le rez-de-chaussée = ground floor'},
+{id:104,cat:'vocabulaire',sub:'Maison',type:'mcq',instruction:'Traduisez.',text:'"attic" en français:',options:['la cave','le sous-sol','le grenier','le toit'],answer:2,explanation:'le grenier = attic; la cave = cellar/basement'},
+{id:105,cat:'vocabulaire',sub:'Maison',type:'mcq',instruction:'Traduisez.',text:'"cellar/basement" en français:',options:['le grenier','la cave','le sous-sol','le bureau'],answer:1,explanation:'la cave = cellar; le sous-sol = basement (often same in context)'},
+{id:106,cat:'vocabulaire',sub:'Maison',type:'text',instruction:'Traduisez.',text:'I live in a flatshare.',hint:'en colocation',answer:['j\'habite en colocation','je vis en colocation','j habite en colocation'],explanation:'J\'habite en colocation.'},
+{id:107,cat:'vocabulaire',sub:'Maison',type:'mcq',instruction:'Complétez.',text:'J\'habite _____ le 13ème arrondissement.',options:['en','à','dans','de'],answer:2,explanation:'On habite dans le X arrondissement.'},
+{id:108,cat:'vocabulaire',sub:'Maison',type:'mcq',instruction:'Complétez.',text:'J\'habite _____ deuxième étage.',options:['en','à le','au','dans le'],answer:2,explanation:'au (= à + le) + étage: j\'habite au deuxième étage'},
+{id:109,cat:'vocabulaire',sub:'Maison',type:'mcq',instruction:'"How many rooms?" en français:',text:'"How many rooms are there?"',options:['Il y a combien d\'étages?','Il y a combien de pièces?','C\'est combien de chambres?','Vous avez combien?'],answer:1,explanation:'Il y a combien de pièces?'},
+{id:110,cat:'vocabulaire',sub:'Maison',type:'mcq',instruction:'Préférence. Complétez.',text:'Je préfère la chambre _____ c\'est calme.',options:['parce que','pour','donc','mais'],answer:0,explanation:'parce que + verbe conjugué pour exprimer la raison'},
+{id:111,cat:'vocabulaire',sub:'Maison',type:'mcq',instruction:'Adjectifs logement.',text:'"The apartment is bright." → L\'appartement est:',options:['sombre','moche','lumineux','moderne'],answer:2,explanation:'lumineux/lumineuse = bright/light-filled'},
+{id:112,cat:'vocabulaire',sub:'Maison',type:'mcq',instruction:'Adjectifs logement.',text:'"The room is dark." → La pièce est:',options:['lumineuse','sombre','calme','agréable'],answer:1,explanation:'sombre = dark'},
+{id:113,cat:'vocabulaire',sub:'Maison',type:'mcq',instruction:'Adjectifs logement.',text:'"The neighbourhood is quiet." → Le quartier est:',options:['bruyant','vivant','calme','propre'],answer:2,explanation:'calme = quiet/peaceful'},
+{id:114,cat:'vocabulaire',sub:'Maison',type:'mcq',instruction:'Choisissez.',text:'"spacious" en français:',options:['sombre','spacieux','propre','moderne'],answer:1,explanation:'spacieux/spacieuse = spacious (note: souvent écrit "spatieux" dans vos slides — accepté aussi)'},
+{id:115,cat:'vocabulaire',sub:'Meubles',type:'mcq',instruction:'Traduisez.',text:'"an armchair" en français:',options:['un canapé','un fauteuil','une chaise','un coussin'],answer:1,explanation:'un fauteuil = armchair (avec accoudoirs); une chaise = chair (sans accoudoirs)'},
+{id:116,cat:'vocabulaire',sub:'Meubles',type:'mcq',instruction:'Traduisez.',text:'"curtains" en français:',options:['le tapis','les rideaux','les coussins','les lampes'],answer:1,explanation:'les rideaux = curtains'},
+{id:117,cat:'vocabulaire',sub:'Meubles',type:'mcq',instruction:'Traduisez.',text:'"a carpet/rug" en français:',options:['le rideau','la lampe','le tapis','le coussin'],answer:2,explanation:'le tapis = carpet/rug'},
+{id:118,cat:'vocabulaire',sub:'Meubles',type:'mcq',instruction:'Traduisez.',text:'"a wardrobe" en français:',options:['une armoire','un miroir','un lit','une porte'],answer:0,explanation:'une armoire = a wardrobe/closet'},
+{id:119,cat:'vocabulaire',sub:'Meubles',type:'mcq',instruction:'Traduisez.',text:'"a clock" en français:',options:['le miroir','l\'horloge','la lampe','la plante'],answer:1,explanation:'l\'horloge = the clock'},
+{id:120,cat:'vocabulaire',sub:'Meubles',type:'mcq',instruction:'Traduisez.',text:'"a washing machine" en français:',options:['un lave-vaisselle','une machine à café','une machine à laver','un sèche-linge'],answer:2,explanation:'une machine à laver = washing machine'},
+{id:121,cat:'vocabulaire',sub:'Meubles',type:'mcq',instruction:'Traduisez.',text:'"a fridge" en français:',options:['un congélateur','un frigo','un four','un micro-ondes'],answer:1,explanation:'un frigo (fam.) / un réfrigérateur = fridge'},
+{id:122,cat:'vocabulaire',sub:'Meubles',type:'text',instruction:'Décrivez.',text:'In the living room there are curtains, a sofa, and a rug.',hint:'dans le salon, il y a, les rideaux, le canapé, le tapis',answer:['dans le salon il y a des rideaux un canapé et un tapis','dans le salon il y a les rideaux le canapé et le tapis'],explanation:'Dans le salon, il y a des rideaux, un canapé et un tapis.'},
+{id:123,cat:'vocabulaire',sub:'Meubles',type:'mcq',instruction:'c\'est vs il y a.',text:'"C\'est le salon" signifie:',options:['Il existe un salon','On identifie/nomme la pièce','Il y a quelque chose dans le salon','La pièce est calme'],answer:1,explanation:'C\'est + nom = identification. Il y a = existence.'},
+{id:124,cat:'vocabulaire',sub:'Meubles',type:'mcq',instruction:'c\'est vs il y a.',text:'_____ un canapé dans mon salon.',options:['C\'est','Ce sont','Il y a','Il est'],answer:2,explanation:'Il y a = there is/are (existence d\'un objet/personne)'},
+// ── VOCABULAIRE VILLE  ──
+{id:125,cat:'vocabulaire',sub:'Ville',type:'mcq',instruction:'Traduisez.',text:'"a bakery" en français:',options:['une boucherie','une boulangerie','une pharmacie','une épicerie'],answer:1,explanation:'une boulangerie = bakery'},
+{id:126,cat:'vocabulaire',sub:'Ville',type:'mcq',instruction:'Traduisez.',text:'"a hairdresser\'s" en français:',options:['un médecin','une pharmacie','un coiffeur','un hôpital'],answer:2,explanation:'un coiffeur = hairdresser / hair salon'},
+{id:127,cat:'vocabulaire',sub:'Ville',type:'mcq',instruction:'Traduisez.',text:'"a market" en français:',options:['un musée','un marché','un magasin','un laboratoire'],answer:1,explanation:'un marché = a market'},
+{id:128,cat:'vocabulaire',sub:'Ville',type:'mcq',instruction:'Traduisez.',text:'"a bus stop" en français:',options:['une gare','un arrêt de bus','un aéroport','un tramway'],answer:1,explanation:'un arrêt de bus = bus stop; une gare = train station'},
+{id:129,cat:'vocabulaire',sub:'Ville',type:'mcq',instruction:'Traduisez.',text:'"a police station" en français:',options:['un commissariat','un hôpital','un tribunal','une école'],answer:0,explanation:'un commissariat = police station'},
+{id:130,cat:'vocabulaire',sub:'Ville',type:'text',instruction:'Décrivez votre quartier.',text:'In my neighbourhood, there is a bakery and a café but there is no hospital.',hint:'Dans mon quartier, il y a..., il n\'y a pas de...',answer:['dans mon quartier il y a une boulangerie et un café mais il n\'y a pas d\'hôpital','dans mon quartier il y a une boulangerie et un café mais il ny a pas d hôpital'],explanation:'Dans mon quartier, il y a une boulangerie et un café mais il n\'y a pas d\'hôpital.'},
+{id:131,cat:'vocabulaire',sub:'Ville',type:'mcq',instruction:'Complétez la réponse.',text:'"Où est la Tour Eiffel?" → "_____ loin."',options:['Il y a','C\'est','C\'est est','Il est'],answer:1,explanation:'C\'est loin / C\'est près — réponse courte pour localisation'},
+{id:132,cat:'vocabulaire',sub:'Ville',type:'mcq',instruction:'Choisissez.',text:'Comment demander la localisation de quelque chose?',options:['Il y a la Tour Eiffel?','Où est la Tour Eiffel?','C\'est la Tour Eiffel?','Comment s\'appelle la Tour Eiffel?'],answer:1,explanation:'Où est + nom? = Where is...?'},
+// ══════════════════════════════════════════
+// CONNECTEURS LOGIQUES  ~20 Qs
+// ══════════════════════════════════════════
+{id:133,cat:'connecteurs',type:'mcq',instruction:'Identifiez la fonction.',text:'"parce que" et "car" expriment:',options:['une conséquence','une cause','une opposition','un but'],answer:1,explanation:'parce que / car = exprimer une cause'},
+{id:134,cat:'connecteurs',type:'mcq',instruction:'Identifiez la fonction.',text:'"donc" et "alors" expriment:',options:['une cause','un but','une conséquence','un exemple'],answer:2,explanation:'donc / alors = exprimer une conséquence'},
+{id:135,cat:'connecteurs',type:'mcq',instruction:'Identifiez la fonction.',text:'"mais" exprime:',options:['une conséquence','une cause','une opposition','l\'ordre'],answer:2,explanation:'mais = exprimer une opposition/contraste'},
+{id:136,cat:'connecteurs',type:'mcq',instruction:'Identifiez la fonction.',text:'"pour + infinitif" exprime:',options:['une cause','un but','une conséquence','un exemple'],answer:1,explanation:'pour + infinitif = exprimer un but (une intention)'},
+{id:137,cat:'connecteurs',type:'mcq',instruction:'Choisissez le bon connecteur.',text:'Je suis fatigué _____ je travaille beaucoup.',options:['donc','mais','parce que','pour'],answer:2,explanation:'parce que + verbe conjugué pour exprimer la cause'},
+{id:138,cat:'connecteurs',type:'mcq',instruction:'Choisissez.',text:'Il déteste Paris _____ il habite à Lyon.',options:['parce que','mais','donc','pour'],answer:2,explanation:'donc + verbe conjugué = conséquence'},
+{id:139,cat:'connecteurs',type:'mcq',instruction:'Choisissez.',text:'J\'aime le café _____ je n\'aime pas le thé.',options:['donc','mais','parce que','car'],answer:1,explanation:'mais = opposition'},
+{id:140,cat:'connecteurs',type:'mcq',instruction:'Choisissez.',text:'Je vais à HEC _____ étudier le management.',options:['donc','mais','parce que','pour'],answer:3,explanation:'pour + infinitif = but'},
+{id:141,cat:'connecteurs',type:'mcq',instruction:'Ordre dans le discours.',text:'Je me réveille, _____ je prends le bus, _____ j\'arrive à HEC.',options:['d\'abord ... ensuite','puis ... d\'abord','enfin ... puis','donc ... mais'],answer:0,explanation:'Ordre séquentiel: d\'abord, puis/ensuite, enfin'},
+{id:142,cat:'connecteurs',type:'mcq',instruction:'Choisissez.',text:'Il mange beaucoup _____ il ne grossit pas.',options:['donc','mais','parce que','alors'],answer:1,explanation:'mais = opposition entre deux faits'},
+{id:143,cat:'connecteurs',type:'text',instruction:'Complétez avec le bon connecteur (cause).',text:'Paul n\'a pas d\'amis _____ il est trop bizarre.',hint:'parce que ou car',answer:['parce que','car'],explanation:'parce que / car expriment la cause'},
+{id:144,cat:'connecteurs',type:'mcq',instruction:'Choisissez.',text:'"pour" + quoi?',options:['verbe conjugué','verbe à l\'infinitif','nom seulement','adjectif'],answer:1,explanation:'pour + infinitif: Je travaille pour apprendre.'},
+{id:145,cat:'connecteurs',type:'mcq',instruction:'Choisissez.',text:'Paul est malheureux _____ il se dispute avec tout le monde.',options:['pour','donc','parce que','mais'],answer:2,explanation:'parce que: cause → résultat'},
+{id:146,cat:'connecteurs',type:'mcq',instruction:'Ordre: "indiquer l\'ordre final".',text:'_____ je dors à 22h.',options:['D\'abord','Puis','Ensuite','Enfin'],answer:3,explanation:'Enfin = finally, last step in a sequence'},
+{id:147,cat:'connecteurs',type:'mcq',instruction:'Choisissez.',text:'"D\'abord je me lève. _____ je me douche. _____ je prends le bus."',options:['D\'abord ... Enfin','Ensuite ... Enfin','Puis ... Ensuite','Puis ... D\'abord'],answer:1,explanation:'Ensuite (2e étape) ... Enfin (étape finale)'},
+{id:148,cat:'connecteurs',type:'text',instruction:'Complétez avec le bon connecteur.',text:'Paul veut un nouveau téléphone _____ il n\'a pas d\'argent.',hint:'mais (opposition)',answer:['mais'],explanation:'mais = opposition (il veut X mais il ne peut pas)'},
+{id:149,cat:'connecteurs',type:'mcq',instruction:'Exemple.',text:'"par exemple" sert à:',options:['exprimer une cause','illustrer par un exemple','exprimer une conséquence','indiquer l\'ordre'],answer:1,explanation:'par exemple + verbe conjugué = illustrer une idée'},
+{id:150,cat:'connecteurs',type:'mcq',instruction:'car vs parce que.',text:'"Car" est suivi de:',options:['infinitif','nom','verbe conjugué','adjectif'],answer:2,explanation:'car + verbe conjugué (comme parce que). "Car" est plus littéraire/formel.'},
+{id:151,cat:'connecteurs',type:'text',instruction:'Production: reliez ces 2 idées avec "donc".',text:'"Je travaille beaucoup. Je suis fatigué." Combinez:',hint:'donc',answer:['je travaille beaucoup donc je suis fatigué','je travaille beaucoup, donc je suis fatigué'],explanation:'Je travaille beaucoup, donc je suis fatigué.'},
+// ══════════════════════════════════════════
+// PLACE DES ADJECTIFS  ~20 Qs
+// ══════════════════════════════════════════
+{id:152,cat:'adjectifs',type:'mcq',instruction:'Règle générale.',text:'En général, l\'adjectif qualificatif se place:',options:['avant le nom','après le nom','avant ou après, indifféremment','jamais à côté du nom'],answer:1,explanation:'En général, l\'adjectif qualificatif se place après le nom: un homme rusé, une fille calme.'},
+{id:153,cat:'adjectifs',type:'mcq',instruction:'Adjectifs courts avant le nom.',text:'Lequel de ces adjectifs se place AVANT le nom?',options:['mexicain','intéressant','rouge','petit'],answer:3,explanation:'Adjectifs courts avant le nom: beau, joli, petit, grand, gros, bon, mauvais, jeune, vieux, nouveau'},
+{id:154,cat:'adjectifs',type:'mcq',instruction:'Choisissez.',text:'"une belle maison" — correct?',options:['Oui, beau/belle se place avant','Non, il faut dire une maison belle','Les deux sont possibles','Belle ne peut pas modifier maison'],answer:0,explanation:'beau/belle est un adjectif court qui se place avant le nom'},
+{id:155,cat:'adjectifs',type:'mcq',instruction:'Mutation devant voyelle.',text:'"beau" devant un nom masculin singulier commençant par voyelle devient:',options:['beau','bel','belle','beaux'],answer:1,explanation:'beau → bel devant voyelle ou h muet: un bel appartement, un bel homme'},
+{id:156,cat:'adjectifs',type:'mcq',instruction:'Mutation.',text:'"nouveau" devant voyelle masculine singulier:',options:['nouveau','nouvel','nouvelle','nouveaux'],answer:1,explanation:'nouveau → nouvel: un nouvel appartement, un nouvel ami'},
+{id:157,cat:'adjectifs',type:'mcq',instruction:'Mutation.',text:'"vieux" devant voyelle masculine singulier:',options:['vieux','vieil','vieille','vieux toujours'],answer:1,explanation:'vieux → vieil: un vieil immeuble, un vieil ami'},
+{id:158,cat:'adjectifs',type:'mcq',instruction:'Adjectifs de couleur.',text:'Les adjectifs de couleur se placent:',options:['toujours avant le nom','toujours après le nom','avant les noms masculins','n\'importe où'],answer:1,explanation:'Nationalité, couleur, forme → toujours après le nom'},
+{id:159,cat:'adjectifs',type:'mcq',instruction:'Nationalité.',text:'"un film mexicain" — mexicain est:',options:['avant le nom','après le nom','avant ou après','entre deux noms'],answer:1,explanation:'Nationalité → toujours après le nom'},
+{id:160,cat:'adjectifs',type:'mcq',instruction:'Exercice DM: placez les adjectifs.',text:'(bon - mexicain) C\'est un _____ film _____.',options:['bon ... mexicain','mexicain ... bon','bon ... bon','film bon mexicain'],answer:0,explanation:'bon (court, avant) + film + mexicain (nationalité, après)'},
+{id:161,cat:'adjectifs',type:'mcq',instruction:'Exercice DM.',text:'(rouge - belle) Elle porte une _____ robe _____.',options:['belle ... rouge','rouge ... belle','belle ... belle','robe rouge belle'],answer:0,explanation:'belle (court, avant) + rouge (couleur, après le nom)'},
+{id:162,cat:'adjectifs',type:'mcq',instruction:'Exercice DM.',text:'(intéressante - nouvelle) C\'est une _____ théorie _____.',options:['nouvelle ... intéressante','intéressante ... nouvelle','nouvelle ... intéressante','théorie nouvelle intéressante'],answer:0,explanation:'nouvelle (court, avant) + théorie + intéressante (qualificatif long, après)'},
+{id:163,cat:'adjectifs',type:'mcq',instruction:'Exercice DM.',text:'(classique - vieil) C\'est un _____ immeuble _____.',options:['vieil ... classique','classique ... vieil','vieil ... vieil','immeuble classique vieil'],answer:0,explanation:'vieil (mutation de vieux, avant + voyelle) + classique (long, après)'},
+{id:164,cat:'adjectifs',type:'mcq',instruction:'Exercice DM.',text:'(grande - moderne) Elle habite dans une _____ maison _____.',options:['grande ... moderne','moderne ... grande','grande ... grande','maison grande moderne'],answer:0,explanation:'grande (court, avant) + maison + moderne (long, après)'},
+{id:165,cat:'adjectifs',type:'mcq',instruction:'Exercice DM.',text:'(bleus - grands) Elles ont de _____ yeux _____.',options:['grands ... bleus','bleus ... grands','grands yeux bleus','grands ... bleus'],answer:0,explanation:'grands (court, avant) + yeux + bleus (couleur, après). L\'adjectif numéral/taille précède la couleur.'},
+{id:166,cat:'adjectifs',type:'mcq',instruction:'Particularité.',text:'Certains adjectifs changent de sens selon leur position. "Un grand homme" signifie:',options:['a tall man','a great man','a large man','a fat man'],answer:1,explanation:'grand avant = great (sens figuré). grand après = tall (sens propre).'},
+{id:167,cat:'adjectifs',type:'mcq',instruction:'Particularité.',text:'"Un homme grand" signifie:',options:['a great man','a tall man','a fat man','an old man'],answer:1,explanation:'grand après le nom = physiquement grand (tall)'},
+{id:168,cat:'adjectifs',type:'mcq',instruction:'Choisissez.',text:'"une petite amie" signifie surtout:',options:['a short friend','a young friend','a girlfriend','a little friend'],answer:2,explanation:'petite avant = relationship context → girlfriend. Petit après = size.'},
+{id:169,cat:'adjectifs',type:'mcq',instruction:'Choisissez la bonne phrase.',text:'(curieuse - jeune) Ma voisine est une _____ fille très _____.',options:['jeune ... curieuse','curieuse ... jeune','jeune ... jeune','curieuse ... curieuse'],answer:0,explanation:'jeune (court, avant) + fille + curieuse (long, après)'},
+{id:170,cat:'adjectifs',type:'mcq',instruction:'Choisissez.',text:'(accueillante - petite) C\'est une _____ dame _____.',options:['petite ... accueillante','accueillante ... petite','petite ... petite','accueillante ... accueillante'],answer:0,explanation:'petite (court, avant) + dame + accueillante (long, après)'},
+// ══════════════════════════════════════════
+// GRAMMAIRE — PRÉSENT + IL Y A  ~20 Qs
+// ══════════════════════════════════════════
+{id:171,cat:'grammaire',sub:'Présent',type:'mcq',instruction:'METTRE — conjuguez.',text:'Je _____ mon manteau.',options:['mets','met','mette','mettons'],answer:0,explanation:'METTRE: je mets, tu mets, il met, nous mettons, vous mettez, ils mettent'},
+{id:172,cat:'grammaire',sub:'Présent',type:'mcq',instruction:'METTRE — conjuguez.',text:'Il _____ une cravate aujourd\'hui.',options:['mets','met','mette','mettons'],answer:1,explanation:'il/elle/on met (sans s)'},
+{id:173,cat:'grammaire',sub:'Présent',type:'mcq',instruction:'METTRE — conjuguez.',text:'Nous _____ nos chaussures.',options:['mets','mettons','mettez','mettent'],answer:1,explanation:'nous mettons'},
+{id:174,cat:'grammaire',sub:'Présent',type:'mcq',instruction:'PORTER — conjuguez.',text:'Elle _____ une robe rouge.',options:['portes','portent','porte','portons'],answer:2,explanation:'il/elle/on porte'},
+{id:175,cat:'grammaire',sub:'Présent',type:'mcq',instruction:'PORTER — conjuguez.',text:'Ils _____ des costumes.',options:['porte','portent','portons','portez'],answer:1,explanation:'ils/elles portent'},
+{id:176,cat:'grammaire',sub:'Présent',type:'mcq',instruction:'ALLER — conjuguez.',text:'Vous _____ au marché.',options:['allez','allons','vont','vas'],answer:0,explanation:'ALLER: vous allez'},
+{id:177,cat:'grammaire',sub:'Présent',type:'mcq',instruction:'ALLER — conjuguez.',text:'Ils _____ à l\'université.',options:['allons','allez','vont','vas'],answer:2,explanation:'ils/elles vont'},
+{id:178,cat:'grammaire',sub:'Il y a',type:'mcq',instruction:'Définissez.',text:'"il y a" signifie:',options:['he has','there is / there are','he goes','it is'],answer:1,explanation:'il y a = there is / there are (existence)'},
+{id:179,cat:'grammaire',sub:'Il y a',type:'text',instruction:'Mettez à la forme négative.',text:'Il y a un parc dans mon quartier. → Négatif:',hint:'il n\'y a pas de',answer:['il n\'y a pas de parc dans mon quartier','il n y a pas de parc dans mon quartier','il ny a pas de parc'],explanation:'Négation de il y a: il n\'y a pas de + nom'},
+{id:180,cat:'grammaire',sub:'Il y a',type:'mcq',instruction:'Négation.',text:'Il y a un hôpital. → Négation:',options:['Il y a pas un hôpital.','Il n\'y a pas un hôpital.','Il n\'y a pas d\'hôpital.','Il n\'y a pas de un hôpital.'],answer:2,explanation:'il n\'y a pas d\' + nom commençant par voyelle (hôpital → d\'hôpital)'},
+{id:181,cat:'grammaire',sub:'Il y a',type:'mcq',instruction:'c\'est vs il y a.',text:'"C\'est le salon" vs "Il y a un canapé" — quelle est la différence?',options:['Aucune différence','C\'est = identifier/nommer; il y a = existence','C\'est = quantité; il y a = qualité','C\'est = futur; il y a = présent'],answer:1,explanation:'C\'est le salon = identification (naming the room). Il y a un canapé = existence (there is a sofa).'},
+{id:182,cat:'grammaire',sub:'Présent',type:'mcq',instruction:'Négation au présent.',text:'Elle étudie tous les jours. → Négatif:',options:['Elle n\'étudie pas tous les jours.','Elle pas étudie tous les jours.','Elle étudie non.','Elle n\'étudie jamais.'],answer:0,explanation:'Négation: ne + verbe + pas'},
+{id:183,cat:'grammaire',sub:'Présent',type:'mcq',instruction:'Choisissez.',text:'J\'habite _____ ville.',options:['en','à la','dans le','au'],answer:0,explanation:'Habiter en ville / en banlieue (féminin, sans article)'},
+{id:184,cat:'grammaire',sub:'Présent',type:'mcq',instruction:'Prépositions avec habiter.',text:'J\'habite _____ Paris.',options:['en','dans','à','au'],answer:2,explanation:'Habiter à + ville: j\'habite à Paris, à Nice, à Lyon'},
+{id:185,cat:'grammaire',sub:'Présent',type:'mcq',instruction:'Prépositions avec habiter.',text:'Elle habite _____ France.',options:['à','en','au','dans'],answer:1,explanation:'Habiter en + pays féminin: en France, en Espagne, en Italie'},
+{id:186,cat:'grammaire',sub:'Présent',type:'mcq',instruction:'Adverbes de fréquence.',text:'"toujours" se traduit par:',options:['sometimes','never','always','rarely'],answer:2,explanation:'toujours = always; jamais = never; parfois = sometimes; souvent = often; rarement = rarely'},
+{id:187,cat:'grammaire',sub:'Présent',type:'mcq',instruction:'Adverbes de fréquence.',text:'Du plus fréquent au moins fréquent:',options:['toujours > souvent > parfois > rarement > jamais','jamais > rarement > parfois > souvent > toujours','souvent > toujours > parfois > jamais > rarement','parfois > souvent > jamais > toujours > rarement'],answer:0,explanation:'toujours (100%) > souvent > parfois > rarement > jamais (0%)'},
+{id:188,cat:'grammaire',sub:'Présent',type:'mcq',instruction:'"never" en français:',text:'"She never goes to the cinema."',options:['Elle ne va pas au cinéma.','Elle ne va jamais au cinéma.','Elle toujours ne va pas.','Elle jamais va.'],answer:1,explanation:'jamais: ne + verbe + jamais → Elle ne va jamais au cinéma.'},
+{id:189,cat:'grammaire',sub:'Présent',type:'mcq',instruction:'Choisissez.',text:'"Dans mon quartier, il n\'y a _____ supermarché."',options:['pas de','pas du','pas des','pas un'],answer:0,explanation:'il n\'y a pas de + nom (pas d\' devant voyelle)'},
+// ══════════════════════════════════════════
+// COULEURS — ACCORD  ~12 Qs
+// ══════════════════════════════════════════
+{id:190,cat:'couleurs',type:'mcq',instruction:'Accord des couleurs.',text:'Quelles couleurs sont INVARIABLES (ne changent jamais)?',options:['noir, blanc, rouge','rose, orange, marron','bleu, vert, gris','rouge, bleu, noir'],answer:1,explanation:'Exceptions invariables: rose, orange, marron (ne prennent pas le féminin ni le pluriel)'},
+{id:191,cat:'couleurs',type:'mcq',instruction:'Accord.',text:'"un costume noir" au féminin:',options:['une jupe noir','une jupe noire','une jupe noirse','une jupe noirs'],answer:1,explanation:'noir → noire au féminin (+ e)'},
+{id:192,cat:'couleurs',type:'mcq',instruction:'Accord.',text:'"une robe verte" au pluriel:',options:['des robes vert','des robes vertes','des robes verts','des robes verte'],answer:1,explanation:'verte → vertes au pluriel féminin'},
+{id:193,cat:'couleurs',type:'mcq',instruction:'Invariable.',text:'"une robe rose" au pluriel:',options:['des robes roses','des robes rose','des robes rosées','des robe rose'],answer:1,explanation:'rose est invariable: des robes rose (no s)'},
+{id:194,cat:'couleurs',type:'mcq',instruction:'Invariable.',text:'"un sac marron" au pluriel:',options:['des sacs marrons','des sacs marron','des sacs marrones','des sac marron'],answer:1,explanation:'marron est invariable: des sacs marron'},
+{id:195,cat:'couleurs',type:'mcq',instruction:'Accord.',text:'"un pantalon blanc" au pluriel:',options:['des pantalons blanc','des pantalons blancs','des pantalons blanche','des pantalon blanc'],answer:1,explanation:'blanc → blancs au pluriel masculin'},
+{id:196,cat:'couleurs',type:'mcq',instruction:'Accord.',text:'"un chapeau gris" au féminin:',options:['une casquette gris','une casquette grise','une casquette grises','une casquette griss'],answer:1,explanation:'gris → grise au féminin'},
+{id:197,cat:'couleurs',type:'mcq',instruction:'Exercice.',text:'"des lunettes de soleil _____ (orange)"',options:['oranges','orange','orangée','orangés'],answer:1,explanation:'orange = invariable: des lunettes orange'},
+{id:198,cat:'couleurs',type:'mcq',instruction:'Accord pluriel.',text:'"des chaussures blanches" — blanc a pris:',options:['e + s','s seulement','e seulement','rien'],answer:0,explanation:'blanc → blanche (fém.) → blanches (fém. plur.): + e + s'},
+{id:199,cat:'couleurs',type:'mcq',instruction:'Accord.',text:'"un foulard rouge" au féminin:',options:['une écharpe rouge','une écharpe rouges','une écharpe rougée','une écharpe rouges'],answer:0,explanation:'rouge est invariable en genre: une écharpe rouge'},
+{id:200,cat:'couleurs',type:'mcq',instruction:'Accord.',text:'"un pull bleu" au pluriel féminin:',options:['des robes bleu','des robes bleues','des robes bleus','des robes bleusse'],answer:1,explanation:'bleu → bleues au pluriel féminin (bleu → bleue → bleues)'},
+{id:201,cat:'couleurs',type:'mcq',instruction:'Synthèse accord.',text:'Lesquelles de ces couleurs s\'accordent normalement (prennent -e, -s)?',options:['rose, orange, marron','noir, blanc, vert, bleu, gris','rouge seulement','aucune couleur ne s\'accorde'],answer:1,explanation:'Couleurs qui s\'accordent: noir, blanc, vert, bleu, gris, etc. Exceptions invariables: rose, orange, marron.'},
+// ══════════════════════════════════════════
+// TRADUCTION / PRODUCTION ECRITE  ~20 Qs
+// ══════════════════════════════════════════
+{id:202,cat:'traduction',type:'text',instruction:'Traduisez.',text:'I live on the 3rd floor in a shared apartment.',hint:'au troisième étage, en colocation',answer:['j\'habite au troisième étage en colocation','j habite au troisième étage en colocation','j\'habite au 3ème étage en colocation'],explanation:'J\'habite au troisième étage en colocation.'},
+{id:203,cat:'traduction',type:'text',instruction:'Traduisez.',text:'Tomorrow I am going to wake up early, then get ready quickly.',hint:'futur proche + d\'abord/ensuite',answer:['je vais me réveiller tôt puis je vais me préparer rapidement','demain je vais me réveiller tôt ensuite je vais me préparer','je vais me réveiller tôt ensuite me préparer'],explanation:'Demain, je vais me réveiller tôt, ensuite je vais me préparer rapidement.'},
+{id:204,cat:'traduction',type:'text',instruction:'Traduisez.',text:'My favourite room is the living room because it is bright.',hint:'ma pièce préférée, le salon, lumineux, parce que',answer:['ma pièce préférée est le salon parce que c\'est lumineux','ma pièce préférée est le salon car c\'est lumineux'],explanation:'Ma pièce préférée est le salon parce que c\'est lumineux.'},
+{id:205,cat:'traduction',type:'text',instruction:'Traduisez.',text:'She wakes up, then she takes a shower, and finally she goes to HEC.',hint:'d\'abord, ensuite/puis, enfin',answer:['elle se réveille puis elle se douche et enfin elle va à hec','elle se réveille ensuite elle se douche enfin elle va à hec','puis elle se douche enfin'],explanation:'Elle se réveille, puis elle se douche, et enfin elle va à HEC.'},
+{id:206,cat:'traduction',type:'text',instruction:'Décrivez une pièce.',text:'"It\'s the bedroom. There is a bed and a wardrobe. It\'s calm and bright."',hint:'C\'est la chambre. Il y a... C\'est...',answer:['c\'est la chambre il y a un lit et une armoire c\'est calme et lumineux','c est la chambre il y a un lit et une armoire c est calme et lumineux'],explanation:'C\'est la chambre. Il y a un lit et une armoire. C\'est calme et lumineux.'},
+{id:207,cat:'traduction',type:'text',instruction:'Traduisez.',text:'In my city, there is an airport and a market but there is no hospital.',hint:'il y a... il n\'y a pas de...',answer:['dans ma ville il y a un aéroport et un marché mais il n\'y a pas d\'hôpital','dans ma ville il y a un aéroport et un marché mais il ny a pas d hôpital'],explanation:'Dans ma ville, il y a un aéroport et un marché mais il n\'y a pas d\'hôpital.'},
+{id:208,cat:'traduction',type:'text',instruction:'Traduisez.',text:'The cat is on the sofa, next to the lamp.',hint:'sur, à côté de',answer:['le chat est sur le canapé à côté de la lampe','le chat est sur le canapé, à côté de la lampe'],explanation:'Le chat est sur le canapé, à côté de la lampe.'},
+{id:209,cat:'traduction',type:'text',instruction:'Comparez deux personnes.',text:'Paul works 10h/day, Marie works 6h/day. Write a comparison.',hint:'plus ... que / moins ... que',answer:['paul travaille plus que marie','paul travaille plus que marie marie travaille moins que paul','paul travaille plus que marie car il travaille'],explanation:'Paul travaille plus que Marie. / Marie travaille moins que Paul.'},
+{id:210,cat:'traduction',type:'text',instruction:'Production écrite — routine + vacances.',text:'Write 3 sentences: your HEC routine + holiday plans. Use: plage, jusqu\'à, ensuite, faire.',hint:'futur proche + connecteurs + vocabulaire',answer:['je me réveille','je vais','jusqu\'à','ensuite','plage','faire'],explanation:'Ex: Je me réveille à 8h et j\'étudie jusqu\'à midi. Ensuite je vais déjeuner. Pendant les vacances, je vais aller à la plage et faire du sport.'},
+{id:211,cat:'traduction',type:'text',instruction:'Traduisez.',text:'She works more seriously than her colleagues but less quickly than him.',hint:'plus sérieusement ... mais moins vite',answer:['elle travaille plus sérieusement que ses collègues mais moins vite que lui','elle travaille plus sérieusement mais moins vite que lui'],explanation:'Elle travaille plus sérieusement que ses collègues mais moins vite que lui.'},
+{id:212,cat:'traduction',type:'text',instruction:'Décrivez votre quartier.',text:'In my neighbourhood there is a bakery, a café and a bus stop. Next to my house there is a park.',hint:'Dans mon quartier, il y a..., À côté de chez moi...',answer:['dans mon quartier il y a une boulangerie un café et un arrêt de bus','à côté de chez moi il y a un parc'],explanation:'Dans mon quartier, il y a une boulangerie, un café et un arrêt de bus. À côté de chez moi, il y a un parc.'},
+{id:213,cat:'traduction',type:'text',instruction:'Traduisez.',text:'Every day, I wake up, I shower, I get dressed and I take the bus to go to school.',hint:'je me réveille, je me douche, je m\'habille, je prends le bus',answer:['je me réveille je me douche je m\'habille et je prends le bus','tous les jours je me réveille je me douche je m habille et je prends le bus'],explanation:'Tous les jours, je me réveille, je me douche, je m\'habille et je prends le bus.'},
+{id:214,cat:'traduction',type:'text',instruction:'Traduisez.',text:'I have more books than you but fewer ideas than my colleagues.',hint:'plus de ... que, moins d\'... que',answer:['j\'ai plus de livres que toi mais moins d\'idées que mes collègues','j ai plus de livres que toi mais moins d idées que mes collègues'],explanation:'J\'ai plus de livres que toi mais moins d\'idées que mes collègues.'},
+{id:215,cat:'traduction',type:'text',instruction:'Traduisez.',text:'Next week I am going to visit Nice. There is the sea and the beach, it\'s paradise!',hint:'je vais + infinitif, il y a la mer, la plage, c\'est paradisiaque',answer:['je vais visiter nice il y a la mer et la plage c\'est paradisiaque','la semaine prochaine je vais aller à nice il y a la mer la plage c est paradisiaque'],explanation:'La semaine prochaine, je vais visiter Nice. Il y a la mer et la plage, c\'est paradisiaque!'},
+{id:216,cat:'traduction',type:'text',instruction:'Lettre à un ami — style exam.',text:'Write: you live in a calm neighbourhood, on the 2nd floor, with a flatmate. The apartment is small but bright.',hint:'j\'habite, au deuxième étage, en colocation, petit mais lumineux',answer:['j\'habite dans un quartier calme au deuxième étage en colocation','l\'appartement est petit mais lumineux','j habite dans un quartier calme'],explanation:'J\'habite dans un quartier calme, au deuxième étage, en colocation. L\'appartement est petit mais lumineux.'},
+{id:217,cat:'traduction',type:'text',instruction:'Traduisez.',text:'I am going to go to the beach, then I am going to do sport and finally I am going to sleep.',hint:'futur proche: vais aller, faire, dormir',answer:['je vais aller à la plage ensuite je vais faire du sport et enfin je vais dormir','je vais à la plage ensuite je vais faire du sport enfin dormir'],explanation:'Je vais aller à la plage, ensuite je vais faire du sport, et enfin je vais dormir.'},
+{id:218,cat:'traduction',type:'text',instruction:'Comparaison logement.',text:'My apartment is bigger than yours but less quiet.',hint:'plus grand que... mais moins calme',answer:['mon appartement est plus grand que le tien mais moins calme','mon appartement est plus grand mais moins calme que le tien'],explanation:'Mon appartement est plus grand que le tien mais moins calme.'},
+{id:219,cat:'traduction',type:'text',instruction:'Milo et Lina — dialogue. Répondez en français.',text:'Tu habites où? (Lyon, quartier de Foch, appartement)',hint:'J\'habite à..., dans un appartement...',answer:['j\'habite à lyon dans le quartier de foch','j habite à lyon dans un appartement dans le quartier de foch'],explanation:'J\'habite à Lyon, dans un appartement dans le quartier de Foch.'},
+{id:220,cat:'traduction',type:'text',instruction:'Décrivez votre ville.',text:'Describe Nice: sea, beach, paradise, calm street, beautiful neighbourhood.',hint:'il y a la mer, la plage, c\'est paradisiaque, calme, joli quartier',answer:['il y a la mer et la plage c\'est paradisiaque','à nice il y a la mer c est paradisiaque et un joli quartier'],explanation:'À Nice, il y a la mer, la plage, c\'est paradisiaque! J\'habite dans une rue calme, c\'est un joli quartier!'},
+];
+
+// ══════════════════════════════════════════
+// APP STATE & LOGIC
+// ══════════════════════════════════════════
+let state={filter:'all',pool:[],current:null,answered:false,score:0,total:0,streak:0,seen:new Set(),qCount:0};
+
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+
+function setFilter(f,btn){
+  state.filter=f;
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  buildPool();nextQuestion();
+}
+
+function buildPool(){
+  const pool=state.filter==='all'?QUESTIONS:QUESTIONS.filter(q=>q.cat===state.filter);
+  state.pool=shuffle(pool);
+  state.seen.clear();
+  document.getElementById('qBankVal').textContent=pool.length;
+}
+
+function pickQuestion(){
+  let unseen=state.pool.filter(q=>!state.seen.has(q.id));
+  if(unseen.length===0){state.seen.clear();state.pool=shuffle(state.pool);unseen=state.pool;}
+  const q=unseen[Math.floor(Math.random()*unseen.length)];
+  state.seen.add(q.id);return q;
+}
+
+function nextQuestion(){state.answered=false;state.current=pickQuestion();state.qCount++;renderQuestion();updateStats();}
+
+function updateStats(){
+  document.getElementById('streakVal').textContent=state.streak+(state.streak>=3?'🔥':'');
+  document.getElementById('scoreVal').textContent=state.score;
+  document.getElementById('totalVal').textContent=state.total;
+  const pct=state.total>0?Math.round(state.score/state.total*100):0;
+  document.getElementById('progressFill').style.width=pct+'%';
+  document.getElementById('progressLbl').textContent='Score: '+pct+'%';
+}
+
+const CAT_LABELS={comparaison:'Comparaison',grammaire:'Grammaire',futur:'Futur Proche',reflexifs:'Verbes Pronominaux',vocabulaire:'Vocabulaire',prepositions:'Prépositions de Lieux',connecteurs:'Connecteurs Logiques',adjectifs:'Place des Adjectifs',traduction:'Traduction',couleurs:'Couleurs'};
+
+function renderQuestion(){
+  const q=state.current;
+  const main=document.getElementById('mainContent');
+  const tagLabel=CAT_LABELS[q.cat]||q.cat;
+  const subTag=q.sub?` — ${q.sub}`:'';
+  let inputHTML='';
+  if(q.type==='mcq'){
+    inputHTML=`<div class="options">`+q.options.map((o,i)=>`<button class="option" onclick="checkMCQ(${i})" id="opt${i}"><span class="option-letter">${String.fromCharCode(65+i)}</span>${o}</button>`).join('')+`</div>`;
+  }else if(q.type==='text'){
+    inputHTML=`<div class="text-input-wrap"><input type="text" class="text-input" id="textAns" placeholder="Votre réponse..." onkeydown="if(event.key==='Enter'&&!state.answered)checkText()" autocomplete="off"></div>`;
+  }else if(q.type==='fill'){
+    inputHTML=buildFillHTML(q);
+  }
+  main.innerHTML=`<div class="question-card"><div class="q-meta"><span class="q-tag tag-${q.cat}">${tagLabel}${subTag}</span><span class="q-diff">#${state.qCount}</span></div><div class="q-instruction">${q.instruction}</div><div class="q-text">${q.text}</div>${q.hint?`<div class="q-hint">Indice: <span>${q.hint}</span></div>`:''} ${inputHTML}<div class="feedback" id="feedback"></div><div class="btn-row">${q.type==='text'?`<button class="btn btn-secondary" onclick="checkText()">Vérifier</button>`:''} ${q.type==='fill'?`<button class="btn btn-secondary" onclick="checkFill()">Vérifier</button>`:''}<button class="btn btn-skip" onclick="skipQ()">Passer →</button><button class="btn btn-primary" id="nextBtn" onclick="nextQuestion()" style="display:none">Suivant →</button></div></div>`;
+  if(q.type==='text')setTimeout(()=>{const el=document.getElementById('textAns');if(el)el.focus();},50);
+}
+
+function buildFillHTML(q){
+  let html=`<div class="fill-blank-sentence">`;
+  const parts=q.text.split('_____');
+  parts.forEach((part,i)=>{html+=part;if(i<parts.length-1)html+=`<input type="text" class="blank-input" id="blank${i}" placeholder="..." autocomplete="off">`;});
+  return html+`</div>`;
+}
+
+function norm(s){return(s||'').toLowerCase().replace(/[àáâä]/g,'a').replace(/[éèêë]/g,'e').replace(/[îï]/g,'i').replace(/[ôö]/g,'o').replace(/[ùûü]/g,'u').replace(/ç/g,'c').replace(/[''']/g,'\'').trim();}
+
+function checkMCQ(idx){
+  if(state.answered)return;state.answered=true;
+  const q=state.current,correct=idx===q.answer;
+  registerResult(correct);
+  document.querySelectorAll('.option').forEach((btn,i)=>{btn.disabled=true;if(i===q.answer)btn.classList.add('correct');else if(i===idx&&!correct)btn.classList.add('wrong');});
+  showFeedback(correct,q.options[q.answer],q.explanation);
+  document.getElementById('nextBtn').style.display='block';
+}
+
+function checkText(){
+  if(state.answered)return;
+  const input=document.getElementById('textAns');if(!input)return;
+  const val=norm(input.value);
+  const q=state.current;
+  const correct=q.answer.some(ans=>{
+    const na=norm(ans);
+    if(val===na)return true;
+    // Check if key words present
+    const keyWords=na.split(' ').filter(w=>w.length>3);
+    const matchCount=keyWords.filter(w=>val.includes(w)).length;
+    return matchCount>=Math.max(1,Math.floor(keyWords.length*0.6));
+  });
+  state.answered=true;registerResult(correct);
+  input.classList.add(correct?'correct':'wrong');input.disabled=true;
+  showFeedback(correct,q.answer[0],q.explanation);
+  document.getElementById('nextBtn').style.display='block';
+}
+
+function checkFill(){
+  if(state.answered)return;
+  const q=state.current;state.answered=true;let allCorrect=true;
+  q.blanks.forEach((ans,i)=>{
+    const input=document.getElementById('blank'+i);if(!input)return;
+    const ok=norm(input.value)===norm(ans)||norm(input.value).includes(norm(ans).slice(0,5));
+    input.classList.add(ok?'correct':'wrong');input.disabled=true;
+    if(!ok)allCorrect=false;
+  });
+  registerResult(allCorrect);
+  showFeedback(allCorrect,q.blanks.join(' / '),q.explanation);
+  document.getElementById('nextBtn').style.display='block';
+}
+
+function registerResult(correct){
+  state.total++;
+  if(correct){state.score++;state.streak++;}else{state.streak=0;}
+  updateStats();showFlash(correct);
+}
+
+function skipQ(){if(!state.answered){state.total++;state.streak=0;updateStats();}nextQuestion();}
+
+function showFeedback(correct,answer,explanation){
+  const fb=document.getElementById('feedback');
+  fb.className=`feedback ${correct?'correct-fb':'wrong-fb'}`;
+  fb.style.display='block';
+  fb.innerHTML=`<div class="feedback-title">${correct?'✓ Correct !':'✗ Incorrect'}</div><div class="feedback-body">${!correct?`<div>Réponse: <span class="answer-reveal">${answer}</span></div>`:''}<div>${explanation}</div></div>`;
+}
+
+function showFlash(correct){
+  const el=document.createElement('div');
+  el.className=`score-flash ${correct?'flash-correct':'flash-wrong'}`;
+  el.textContent=correct?'+1 ✓':'✗';
+  document.body.appendChild(el);
+  setTimeout(()=>el.remove(),1300);
+}
+
+buildPool();nextQuestion();
+</script>
+</body>
+</html>
